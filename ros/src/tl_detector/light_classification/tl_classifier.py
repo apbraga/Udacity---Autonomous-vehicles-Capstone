@@ -1,3 +1,5 @@
+# Model used trained by Alex Lechner https://github.com/alex-lechner/Traffic-Light-Classification
+
 from styx_msgs.msg import TrafficLight
 import tensorflow as tf
 import numpy as np

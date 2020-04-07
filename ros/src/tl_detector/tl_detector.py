@@ -40,9 +40,12 @@ class TLDetector(object):
         rospy.Subscriber('/image_color', Image, self.image_cb)
 
         config_string = rospy.get_param("/traffic_light_config")
-        self.config = yaml.load(config_string, Loader=yaml.FullLoader)
+        try:
+            self.config = yaml.load(config_string, Loader=yaml.FullLoader)
+        except:
+            self.config = yaml.load(config_string)
         self.is_site = self.config["is_site"]
-        print("Is Site %d" % self.is_site)
+        #print("Is Site %d" % self.is_site)
 
         self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
@@ -56,14 +59,14 @@ class TLDetector(object):
         self.state_count = 0
 
         self.loop()
-    
+
     def loop(self):
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             if self.pose and self.published_wp:
                 self.publish_traffic()
             rate.sleep
-    
+
     def pose_cb(self, msg):
         self.pose = msg
 
